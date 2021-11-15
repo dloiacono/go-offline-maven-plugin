@@ -140,6 +140,7 @@ public class DependencyDownloader {
             ArtifactRequest artifactRequest = new ArtifactRequest();
             artifactRequest.setArtifact(artifact);
             artifactRequest.setRepositories(context == RepositoryType.MAIN ? remoteRepositories : pluginRepositories);
+
             if (context == RepositoryType.MAIN) {
                 artifactRequest.setRequestContext(context.getRequestContext());
                 mainRequests.add(artifactRequest);
@@ -148,6 +149,12 @@ public class DependencyDownloader {
                 artifactRequest.setRequestContext(context.getRequestContext());
                 pluginRequests.add(artifactRequest);
             }
+
+            if ("io.quarkus".equalsIgnoreCase(artifact.getGroupId())) {
+                Artifact quarkusArtifact = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId() + "-deployment", artifact.getClassifier(), artifact.getExtension(), artifact.getVersion());
+                mainRequests.add(new ArtifactRequest(quarkusArtifact, remoteRepositories, context.getRequestContext()));
+            }
+
             if (context == RepositoryType.MAIN && "jar".equals(artifact.getExtension())) {
                 if (downloadSources) {
                     Artifact sourceArtifact = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId(), "sources", artifact.getExtension(), artifact.getVersion());
