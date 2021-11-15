@@ -153,6 +153,8 @@ public class DependencyDownloader {
             if ("io.quarkus".equalsIgnoreCase(artifact.getGroupId())) {
                 Artifact quarkusArtifact = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId() + "-deployment", artifact.getClassifier(), artifact.getExtension(), artifact.getVersion());
                 mainRequests.add(new ArtifactRequest(quarkusArtifact, remoteRepositories, context.getRequestContext()));
+                Artifact quarkusPomArtifact = new DefaultArtifact(artifact.getGroupId(), artifact.getArtifactId() + "-deployment", "pom", artifact.getExtension(), artifact.getVersion());
+                mainRequests.add(new ArtifactRequest(quarkusPomArtifact, remoteRepositories, context.getRequestContext()));
             }
 
             if (context == RepositoryType.MAIN && "jar".equals(artifact.getExtension())) {
